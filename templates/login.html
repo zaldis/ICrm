@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Login - ICrm{% endblock %}
+
+{% block content %}
+    <div class="row mt-5 pb-5">
+        <div class="col-3 d-flex align-items-center border-end border-dark">
+            <h3>Login your member</h3>
+        </div>
+        <div class="col">
+            <form method="post" action="">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="emailAddress" class="form-label">Work email address</label>
+                    {% for error in form.email.errors %}
+                        <div class="fs-9 text-danger mb-3">
+                            <i class="bi bi-exclamation-square-fill"></i> {{ error|escape }}
+                        </div>
+                    {% endfor %}
+                    <input type="email" name="email" class="form-control" id="emailAddress" aria-describedby="emailHelp">
+                </div>
+                <button type="submit" class="btn btn-dark container-fluid">Submit</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
