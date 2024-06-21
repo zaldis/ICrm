@@ -16,14 +16,29 @@ class UserAdmin(BaseUserAdmin):
 
 @register(models.Developer)
 class DeveloperAdmin(admin.ModelAdmin):
-    fields = ('__all__', )
+    search_fields = ('user__username', )
+    list_filter = ('rate', 'specialization', )
+
+    list_display = (
+        'user',
+        'rate',
+        'specialization'
+    )
 
 
 @register(models.DeliveryManager)
 class DeliveryManagerAdmin(admin.ModelAdmin):
-    fields = ('__all__', )
+    search_fields = ('user__username', )
+
+    list_display = (
+        'user',
+    )
 
 
 @register(models.Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    fields = ('__all__', )
+    search_fields = ('organisation', )
+
+    list_display = (
+        'organisation',
+    )
