@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Login - ICrm{% endblock %}
+
+{% block content %}
+    <div class="row mt-5 pb-5">
+        <div class="col-3 d-flex align-items-center border-end border-dark">
+            <h3>Login</h3>
+        </div>
+        <div class="col">
+            {% if form.errors %}
+                <div class="fs-9 text-danger mb-3">
+                    <i class="bi bi-exclamation-square-fill"></i> {{ form.errors|escape }}
+                </div>
+            {% endif %}
+            <form method="post" action="{% url 'core:login' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="userName" class="form-label">Username</label>
+                    {% for error in form.username.errors %}
+                        <div class="fs-9 text-danger mb-3">
+                            <i class="bi bi-exclamation-square-fill"></i> {{ error|escape }}
+                        </div>
+                    {% endfor %}
+                    <input type="text" name="username" class="form-control" id="userName" aria-describedby="userName">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    {% for error in form.password.errors %}
+                        <div class="fs-9 text-danger mb-3">
+                            <i class="bi bi-exclamation-square-fill"></i> {{ error|escape }}
+                        </div>
+                    {% endfor %}
+                    <input type="password" name="password" class="form-control" id="password" aria-describedby="emailHelp">
+                </div>
+                <button type="submit" class="btn btn-dark container-fluid">Submit</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

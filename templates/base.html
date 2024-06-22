@@ -18,12 +18,19 @@
 <body style="display: flex; flex-direction: column; min-height: 100%">
     <nav class="navbar bg-dark border-bottom border-body p-3" data-bs-theme="dark">
         <div class="container-fluid">
-            <a class="navbar-brand fs-1">ICrm</a>
+            <a href="{% url 'core:index' %}" class="navbar-brand fs-1">ICrm</a>
             <div class="d-flex">
-                <form action="{% url 'core:login' %}">
-                    {% csrf_token %}
-                    <input type="submit" value="Log In" class="btn btn-light">
-                </form>
+                {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'core:logout' %}">
+                        {% csrf_token %}
+                        <input type="submit" value="Log Out" class="btn btn-light">
+                    </form>
+                {% else %}
+                    <form action="{% url 'core:login' %}">
+                        {% csrf_token %}
+                        <input type="submit" value="Log In" class="btn btn-light">
+                    </form>
+                {% endif %}
             </div>
       </div>
     </nav>

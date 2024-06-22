@@ -11,20 +11,24 @@ This project "icrm" should help the company with this issue.
 
 ## Functional requirements
 
-- As an admin user, I can add new delivery manager.
-- As an admin user, I can add new customer.
+### Admin
+- Add new delivery manager.
+- Add new developer.
+- Add new customer.
 
 
-- As a delivery manager user, I can add new developer (and this developer should be linked to my account).
-- As a delivery manager user, I can link a developer (linked to my profile) to the particular customer.
-- As a delivery manager user, I can see all started "grade improvement" processes from developers are linked to my account.
-- As a delivery manager user, I can approve or reject a "grade improvement" process is started by developer which is linked to my account.
+### Customer
+- Can see all his developers.
+- Can see all "grade improvement" processes initiated by my developers and have already being approved by the delivery manager.
+- Can approve or reject a "grade improvement" process initiated by my developer.
 
 
-- As a customer user, I can see all my developers.
-- As a customer user, I can see all "grade improvement" processes initiated by my developers and have already being approved by the delivery manager.
-- As a customer user, I can approve or reject a "grade improvement" process initiated by my developer and has already being approved by the delivery manager.
+### Delivery manager
+- Can suggest developers for customer request.
+- Can see all started "grade improvement" processes by his developers.
+- Can approve or reject a "grade improvement" process is started by his developer.
 
 
-- As a developer user, I can start a "grade improvement" process (only one started process can be at a time).
-- As a developer user, I can see all initiated processes by myself (with current status).
+### Developer
+- Can start a "grade improvement" process (only one started process can be at a time).
+- Can see all initiated processes by myself (with current status).

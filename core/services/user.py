@@ -6,3 +6,7 @@ User = get_user_model()
 
 def is_active_email(email: str) -> bool:
     return User.objects.filter(email=email).exists()
+
+
+def login(email: str, password: str) -> User:
+    pass
