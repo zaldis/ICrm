@@ -17,11 +17,11 @@ class UserAdmin(BaseUserAdmin):
 @register(models.Developer)
 class DeveloperAdmin(admin.ModelAdmin):
     search_fields = ('user__username', )
-    list_filter = ('rate', 'specialization', )
+    list_filter = ('grade', 'specialization', )
 
     list_display = (
         'user',
-        'rate',
+        'grade',
         'specialization'
     )
 
@@ -37,8 +37,8 @@ class DeliveryManagerAdmin(admin.ModelAdmin):
 
 @register(models.Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    search_fields = ('organisation', )
+    search_fields = ('organization', )
 
     list_display = (
-        'organisation',
+        'organization',
     )

@@ -1,0 +1,34 @@
+<div class="container">
+    <div class="row mb-3">
+        <div class="col-2">First name:</div>
+        <div class="col">{{ user.first_name }}</div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-2">Last name:</div>
+        <div class="col">{{ user.last_name }}</div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-2">Role:</div>
+        <div class="col">Developer</div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-2">Specialization:</div>
+        <div class="col">{{ user.developer.specialization }}</div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-2">Grade:</div>
+        <div class="col">{{ user.developer.grade }}</div>
+    </div>
+    {% if user.developer.delivery_manager %}
+        <div class="row mb-3">
+            <div class="col-2">Delivery Manager:</div>
+            <div class="col">{{ user.developer.delivery_manager.user.username }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-2">Customer:</div>
+            <div class="col">{{ user.developer.delivery_manager.customer.organisation }}</div>
+        </div>
+    {% else %}
+        <div class="text-warning">You are on bench now.</div> 
+    {% endif %}
+</div>

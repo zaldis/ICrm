@@ -8,7 +8,7 @@ class User(AbstractUser):
 
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='customer')
-    organisation = models.CharField(max_length=50)
+    organization = models.CharField(max_length=50)
 
 
 class DeliveryManager(models.Model):
@@ -24,7 +24,7 @@ class DeliveryManager(models.Model):
 
 class Developer(models.Model):
 
-    class Rates(models.TextChoices):
+    class Grades(models.TextChoices):
         JUNIOR = 'T1', "Junior"
         MIDDLE = 'T2', "Middle"
         SENIOR = 'T3', "Senior"
@@ -35,7 +35,7 @@ class Developer(models.Model):
         BIG_DATA = 'BD', "Big Data"
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='developer')
-    rate = models.CharField(max_length=10, choices=Rates.choices)
+    grade = models.CharField(max_length=10, choices=Grades.choices)
     specialization = models.CharField(max_length=30, choices=Specialization.choices)
     delivery_manager = models.ForeignKey(
         DeliveryManager,

@@ -1,0 +1,121 @@
+<div class="container">
+    <div class="row mb-3">
+        <div class="col-2">Role:</div>
+        <div class="col">Customer</div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-2">Company:</div>
+        <div class="col">{{ user.customer.organisation }}</div>
+    </div>
+    {% if user.customer.delivery_manager %}
+        <div class="row mb-3">
+            <div class="col-2">Assigned manager:</div>
+            <div class="col">{{ user.customer.delivery_manager.user.username }}</div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-2">Assigned Developers:</div>
+            <div class="col">
+                <ul class="light-group px-0">
+                    {% for developer in user.customer.delivery_manager.developers.all %}
+                        <li class="list-group-item d-flex justify-content-between align-item-center">{{ developer.user.username }}</li>
+                    {% empty %}
+                        No developer was found.
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        {% if not active_developer_request %}
+            <div>
+                <form method="post" action="{% url 'core:developer-requests' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="requested_by" class="form-control" id="requestedBy" value="{{ user.customer.id }}">
+
+                    <label for="specialization" class="form-label">Specialization</label>
+                    <select id="specialization" name="specialization" class="form-control form-select">
+                        <option value="SE">Software Engineer</option>
+                        <option value="DO">DevOps</option>
+                        <option value="BD">Big Data</option>
+                    </select>
+
+                    <label for="grade" class="form-label mt-3">Grade</label>
+                    <select id="grade" name="grade" class="form-control form-select">
+                        <option value="T1">Junior</option>
+                        <option value="T2">Middle</option>
+                        <option value="T3">Senior</option>
+                    </select>
+
+                    <button type="submit" class="btn btn-info mt-3">Request new developer</button>
+                </form>
+            </div>
+        {% else %}
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    Active developer request
+                </div>
+                <div class="card-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-2">Specialization:</div>
+                            <div class="col">{{ active_developer_request.get_specialization_display }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">Grade:</div>
+                            <div class="col">{{ active_developer_request.get_grade_display }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">Suggested developers:</div>
+                            <div class="col">
+                                <ul class="light-group px-0">
+                                    {% for developer in active_developer_request.suggested_developers.all %}
+                                        <li class="list-group-item d-flex justify-content-between align-item-center">
+                                            {{ developer.user.username }}
+                                            <form method="post"
+                                                  action="{% url 'core:approved-developer' active_developer_request.id %}"
+                                            >
+                                                {% csrf_token %}
+                                                <input type="hidden" name="developer" value="{{ developer.id }}">
+                                                <button class="btn btn-warning">Approve</button> 
+                                            </form>
+                                            
+                                        </li>
+                                    {% empty %}
+                                        <span class="text-warning">Manager has added no developers yet.</span>
+                                    {% endfor %}
+                                </ul> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <h2 class="mt-5">Developer request history</h2>
+        {% for developer_request in passed_developer_requests %}
+           <div class="card mb-3">
+                <div class="card-header d-flex justify-content-between">
+                    <div>Passed developer request</div>
+                    <div>{{ developer_request.last_modified_at }}</div>
+                </div>
+                <div class="card-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-2">Specialization:</div>
+                            <div class="col">{{ developer_request.get_specialization_display }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">Grade:</div>
+                            <div class="col">{{ developer_request.get_grade_display }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">Approved developer:</div>
+                            <div class="col">{{ developer_request.approved_developer.user.username }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        {% endfor %}
+    {% endif %}
+</div>
+

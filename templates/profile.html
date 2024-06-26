@@ -1,38 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div>Username: {{ user.username }}</div>
-    <div>First name: {{ user.first_name }}</div>
-    <div>Last name: {{ user.last_name }}</div>
-    
+    <h1 class="my-5">Profile</h1>
     {% if user.developer %}
-        <div>Role: Developer</div>
-        <div>Specialization: {{ user.developer.specialization }}</div>
-        <div>Grade: {{ user.developer.rate }}</div>
-        
-        {% if user.developer.delivery_manager %}
-            <div>Delivery Manager: {{ user.developer.delivery_manager.user.username }}</div>
-        {% endif %}
+        {% include 'profiles/developer.html' %}
     {% endif %}
     
-    {% if user.customer %}
-        <div>Role: Customer</div>
-        <div>Organization: {{ user.customer.organization }}</div>
+    {% if user.delivery_manager %}
+        {% include 'profiles/manager.html' %}
+    {% endif %}
 
-        {% if user.customer.delivery_manager %}
-            <div>Assigned managers:</div>
-            <ul>
-                <li>{{ user.customer.delivery_manager.user.username }}</li>
-            </ul>    
-            
-            <div>Assigned Developers:</div>
-            <ul>
-                {% for developer in user.customer.delivery_manager.developers.all %}
-                    <li>{{ developer.user.username }}</li>
-                {% empty %}
-                    No developer was found.
-                {% endfor %}
-            </ul>
-        {% endif %}
+    {% if user.customer %}
+        {% include 'profiles/customer.html' %}
     {% endif %}
 {% endblock %}

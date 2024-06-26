@@ -21,6 +21,7 @@
             <a href="{% url 'core:index' %}" class="navbar-brand fs-1">ICrm</a>
             <div class="d-flex">
                 {% if user.is_authenticated %}
+                    <span class="text-white me-3">{{ user.username }}</span>
                     <form method="post" action="{% url 'core:logout' %}">
                         {% csrf_token %}
                         <input type="submit" value="Log Out" class="btn btn-light">
