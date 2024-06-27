@@ -5,7 +5,7 @@ from django.views.generic import TemplateView, DetailView
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 
-from core.flows.developer_request import NewDeveloperRequestFlow
+from core.flows.developer_request import node_runner as developer_request_node_runner
 from core.services.developer_request import (
     get_active_developer_request,
     get_developer_request_by_id,
@@ -18,7 +18,6 @@ from core import forms
 from user.services.customer import get_customer_by_user_id
 from user.services.delivery_manager import get_delivery_manager_by_user_id
 from user.services.developer import get_developers_on_bench
-from core.services.flow_process import get_developer_request_process_by_developer_request, get_process_task
 
 
 class IndexView(TemplateView):
@@ -49,7 +48,7 @@ class DeveloperRequestView(View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
-            NewDeveloperRequestFlow.start.run(**form.cleaned_data)
+            developer_request_node_runner.run_start_node(**form.cleaned_data)
             return redirect(self.success_url)
 
 
@@ -78,13 +77,7 @@ class DeveloperApproveView(DetailView):
         if form.is_valid():
             developer_request = get_developer_request_by_id(developer_request_id)
             approved_developer = form.cleaned_data['developer']
-            developer_request_process = get_developer_request_process_by_developer_request(developer_request)
-            approve_task = get_process_task(
-                parent_process=developer_request_process,
-                node=NewDeveloperRequestFlow.approved_by_customer
-            )
-            NewDeveloperRequestFlow.approved_by_customer.run(
-                approve_task,
-                approved_developer=approved_developer,
+            developer_request_node_runner.run_approve_by_customer_node(
+                developer_request, approved_developer
             )
             return redirect(self.success_url)
