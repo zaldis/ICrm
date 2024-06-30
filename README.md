@@ -43,30 +43,23 @@ block-beta
 columns 1
     urls
     space
-    views
-    space
-
-    space
+    views space space
     block:logic
-        flows space services
+        flows
+        space
+        services
     end    
-    
     models
     space
     db[("Database")]
-    
     urls --> views
     views --> urls
- 
     views --> logic
     logic --> views
-    
     flows --> services
     services --> flows
-        
     logic --> models
     models --> logic
-        
     models --> db
     db --> models
 ```

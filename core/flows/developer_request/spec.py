@@ -19,11 +19,11 @@ class NewDeveloperRequestFlow(flow.Flow):
     end = flow.End()
 
     def start_process_handler(
-            self,
-            activation: Activation,
-            requested_by: user_models.Customer,
-            specialization: user_models.Developer.Specialization,
-            grade: user_models.Developer.Grades
+        self,
+        activation: Activation,
+        requested_by: user_models.Customer,
+        specialization: user_models.Developer.Specialization,
+        grade: user_models.Developer.Grades
     ) -> Process:
         developer_request = create_new_developer_request(
             requested_by=requested_by,
@@ -34,9 +34,9 @@ class NewDeveloperRequestFlow(flow.Flow):
         return activation.process
 
     def approved_by_customer_handler(
-            self,
-            activation: Activation,
-            approved_developer: user_models.Developer
+        self,
+        activation: Activation,
+        approved_developer: user_models.Developer
     ) -> Process:
         developer_request: core_models.DeveloperRequest = activation.process.artifact
         approve_developer(developer_request, approved_developer)
