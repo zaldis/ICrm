@@ -48,7 +48,11 @@ class DeveloperRequestView(View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
-            developer_request_node_runner.run_start_node(**form.cleaned_data)
+            developer_request_node_runner.run_start_node(
+                customer_id=form.cleaned_data['requested_by'].id,
+                specialization=form.cleaned_data['specialization'],
+                grade=form.cleaned_data['grade'],
+            )
             return redirect(self.success_url)
 
 
@@ -62,9 +66,9 @@ class SuggestedDeveloperView(View):
             developer_request = get_developer_request_by_id(developer_request_id)
             suggested_developer = form.cleaned_data['developer']
             if request.GET.get('action') == 'cancel':
-                cancel_suggested_developer(developer_request, suggested_developer)
+                cancel_suggested_developer(developer_request.id, suggested_developer.id)
             else:
-                suggest_new_developer(developer_request, suggested_developer)
+                suggest_new_developer(developer_request.id, suggested_developer.id)
             return redirect(self.success_url)
 
 
@@ -78,6 +82,6 @@ class DeveloperApproveView(DetailView):
             developer_request = get_developer_request_by_id(developer_request_id)
             approved_developer = form.cleaned_data['developer']
             developer_request_node_runner.run_approve_by_customer_node(
-                developer_request, approved_developer
+                developer_request.id, approved_developer.id
             )
             return redirect(self.success_url)

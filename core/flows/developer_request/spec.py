@@ -2,9 +2,7 @@ from viewflow import this
 from viewflow.workflow import flow, Activation
 from viewflow.workflow.models import Process
 
-from core import models as core_models
-from user import models as user_models
-from core.services.developer_request import create_new_developer_request, approve_developer
+from core.services import developer_request as developer_request_service
 
 
 class NewDeveloperRequestFlow(flow.Flow):
@@ -21,12 +19,12 @@ class NewDeveloperRequestFlow(flow.Flow):
     def start_process_handler(
         self,
         activation: Activation,
-        requested_by: user_models.Customer,
-        specialization: user_models.Developer.Specialization,
-        grade: user_models.Developer.Grades
+        customer_id: int,
+        specialization: str,
+        grade: str,
     ) -> Process:
-        developer_request = create_new_developer_request(
-            requested_by=requested_by,
+        developer_request = developer_request_service.create_new_developer_request(
+            customer_id=customer_id,
             specialization=specialization,
             grade=grade
         )
@@ -36,8 +34,8 @@ class NewDeveloperRequestFlow(flow.Flow):
     def approved_by_customer_handler(
         self,
         activation: Activation,
-        approved_developer: user_models.Developer
+        approved_developer_id: int,
     ) -> Process:
-        developer_request: core_models.DeveloperRequest = activation.process.artifact
-        approve_developer(developer_request, approved_developer)
+        developer_request = activation.process.artifact
+        developer_request_service.approve_developer(developer_request.id, approved_developer_id)
         return activation.process
