@@ -40,6 +40,11 @@ class ProfileView(LoginRequiredMixin, TemplateView):
             context['passed_developer_requests'] = get_passed_developer_requests(customer.id)
         return context
 
+    def get(self, request, *args, **kwargs):
+        if request.user.is_superuser:
+            return redirect(reverse_lazy('admin:index'))
+        return super().get(request, *args, **kwargs)
+
 
 class DeveloperRequestView(View):
     form_class = forms.NewDeveloperRequestForm
